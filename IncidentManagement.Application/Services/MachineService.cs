@@ -7,36 +7,37 @@ using IncidentManagement.Repository.Interfaces;
 
 namespace IncidentManagement.Application.Services
 {
-    public class IncidentService : IIncidentService
+    public class MachineService : IMachineService
     {
+        private readonly IMachineRepository _machineRepository;
         private readonly IIncidentRepository _incidentRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ILocationRepository _locationRepository;
         private readonly IMapper _mapper;
-        public IncidentService(IIncidentRepository incidentRepository, ICommentRepository commentRepository, IUserRepository userRepository, IMapper mapper)
+        public MachineService(IMachineRepository machineRepository, IIncidentRepository incidentRepository, ICommentRepository commentRepository, IUserRepository userRepository, ILocationRepository locationRepository, IMapper mapper)
         {
+            _machineRepository = machineRepository;
             _incidentRepository = incidentRepository;
             _commentRepository = commentRepository;
             _userRepository = userRepository;
+            _locationRepository = locationRepository;
             _mapper = mapper;
         }
-        public int Create(int createdBy, int assignedTo, string header, string description, out string error)
+        public int Create(string name, int locationId, out string error)
         {
             try
             {
-                var getCreatedBy = _userRepository.FindBy(u => u.Id == createdBy).Result;
-                var getAssignedTo = _userRepository.FindBy(u => u.Id == assignedTo).Result;
-                var incident = new Incident
+                var getLocation = _locationRepository.FindBy(l => l.Id == locationId).Result;
+                var machine = new Machine
                 {
-                    AssignedTo = getAssignedTo,
-                    CreatedBy = getCreatedBy,
-                    Header = header,
-                    Description = description
+                    Name = name,
+                    Location = getLocation,
                 };
-                _incidentRepository.Add(incident);
-                _incidentRepository.SaveChanges();
+                _machineRepository.Add(machine);
+                _machineRepository.SaveChanges();
                 error = "";
-                return incident.Id;
+                return machine.Id;
             }
             catch (System.Exception e)
             {
@@ -46,12 +47,12 @@ namespace IncidentManagement.Application.Services
 
         }
 
-        public IncidentModel Get(int incidentId, out string error)
+        public MachineModel Get(int machineId, out string error)
         {
             try
             {
-                var incident = _incidentRepository.Includes(incidentId).Result;
-                var result = _mapper.Map<IncidentModel>(incident);             
+                var machine = _machineRepository.Includes(machineId).Result;
+                var result = _mapper.Map<MachineModel>(machine);
                 error = "";
                 return result;
             }
@@ -62,12 +63,12 @@ namespace IncidentManagement.Application.Services
             }
         }
 
-        public List<IncidentModel> GetAll(out string error)
+        public List<MachineModel> GetAll(out string error)
         {
             try
             {
-                var incidents = _incidentRepository.GetAll().Result;
-                var result = _mapper.Map<List<IncidentModel>>(incidents);               
+                var machines = _machineRepository.IncludesLocation().Result;
+                var result = _mapper.Map<List<MachineModel>>(machines);               
                 error = "";
                 return result;
             }

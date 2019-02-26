@@ -4,14 +4,16 @@ using IncidentManagement.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IncidentManagement.Repository.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20190226171612_AddedMachineRemovedLocationFromIncident")]
+    partial class AddedMachineRemovedLocationFromIncident
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,15 +56,11 @@ namespace IncidentManagement.Repository.Migrations
 
                     b.Property<string>("Header");
 
-                    b.Property<int?>("MachineId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AssignedToId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("MachineId");
 
                     b.ToTable("Incidents");
                 });
@@ -80,23 +78,6 @@ namespace IncidentManagement.Repository.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Location");
-                });
-
-            modelBuilder.Entity("IncidentManagement.Repository.DTO.Machine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("LocationId");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("Machine");
                 });
 
             modelBuilder.Entity("IncidentManagement.Repository.DTO.User", b =>
@@ -159,17 +140,6 @@ namespace IncidentManagement.Repository.Migrations
                     b.HasOne("IncidentManagement.Repository.DTO.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
-
-                    b.HasOne("IncidentManagement.Repository.DTO.Machine", "Machine")
-                        .WithMany("Incidents")
-                        .HasForeignKey("MachineId");
-                });
-
-            modelBuilder.Entity("IncidentManagement.Repository.DTO.Machine", b =>
-                {
-                    b.HasOne("IncidentManagement.Repository.DTO.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
                 });
 
             modelBuilder.Entity("IncidentManagement.Repository.DTO.User", b =>

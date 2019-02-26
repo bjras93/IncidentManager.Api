@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore, Version=2.2.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.2.2\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
     </Reference>
@@ -147,6 +150,9 @@
     </Reference>
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
     </Reference>
@@ -166,7 +172,9 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="DTO\Location.cs" />
+    <Compile Include="DTO\Machine.cs" />
     <Compile Include="Interfaces\IBaseRepository.cs" />
+    <Compile Include="Interfaces\IMachineRepository.cs" />
     <Compile Include="Interfaces\ILocationRepository.cs" />
     <Compile Include="Interfaces\ICommentRepository.cs" />
     <Compile Include="Interfaces\IIncidentRepository.cs" />
@@ -199,6 +207,14 @@
     <Compile Include="Migrations\20190225155325_AddLocaitonUpdatedIncident.designer.cs">
       <DependentUpon>20190225155325_AddLocaitonUpdatedIncident.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20190226171612_AddedMachineRemovedLocationFromIncident.cs" />
+    <Compile Include="Migrations\20190226171612_AddedMachineRemovedLocationFromIncident.designer.cs">
+      <DependentUpon>20190226171612_AddedMachineRemovedLocationFromIncident.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20190226173731_AddAndRemoveLocation.cs" />
+    <Compile Include="Migrations\20190226173731_AddAndRemoveLocation.designer.cs">
+      <DependentUpon>20190226173731_AddAndRemoveLocation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Queries\BaseRepository.cs" />
     <Compile Include="DTO\Comment.cs" />
     <Compile Include="DTO\Incident.cs" />
@@ -217,6 +233,7 @@
     <Compile Include="Queries\LocationRepository.cs" />
     <Compile Include="Queries\CommentRepository.cs" />
     <Compile Include="Queries\IncidentRepository.cs" />
+    <Compile Include="Queries\MachineRepository.cs" />
     <Compile Include="Queries\UserTypeRepository.cs" />
     <Compile Include="Queries\UserRepository.cs" />
     <Compile Include="RepositoryContext.cs" />

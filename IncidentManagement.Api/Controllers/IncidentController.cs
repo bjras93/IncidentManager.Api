@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IncidentManagement.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace IncidentManagement.Api.Controllers
 {
@@ -18,9 +19,10 @@ namespace IncidentManagement.Api.Controllers
             _incidentService = incidentService;
         }
         [HttpPost]
-        public IActionResult Get(int incidentId)
+        public IActionResult Get([FromBody]JObject data)
         {
-            var incident = _incidentService.Get(incidentId, out string error);
+            var id = int.Parse(data["id"].ToString());
+            var incident = _incidentService.Get(id, out string error);
             if (string.IsNullOrEmpty(error))
             {
                 return Ok(incident);
@@ -34,7 +36,7 @@ namespace IncidentManagement.Api.Controllers
         [HttpPost]
         public IActionResult Create(int createdBy, int assignedTo, string header, string description, int location)
         {
-            var incident = _incidentService.Create(createdBy, assignedTo, header, description, location, out string error);
+            var incident = _incidentService.Create(createdBy, assignedTo, header, description, out string error);
             if (string.IsNullOrEmpty(error))
             {
                 return Ok(incident);

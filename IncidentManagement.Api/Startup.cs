@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using IncidentManagement.Application.Interfaces;
 using IncidentManagement.Application.Services;
 using IncidentManagement.Repository;
@@ -27,6 +28,7 @@ namespace IncidentManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           services.AddAutoMapper();
            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             var sqlServer = Configuration.GetConnectionString("SqlServer");
             services.AddDbContext<RepositoryContext>(options => 
@@ -39,8 +41,10 @@ namespace IncidentManagement
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IIncidentService, IncidentService>();
             services.AddTransient<ILocationService, LocationService>();
+            services.AddTransient<IMachineService, MachineService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IIncidentRepository, IncidentRepository>();
+            services.AddTransient<IMachineRepository, MachineRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
             services.AddTransient<IUserTypeRepository, UserTypeRepository>();    
