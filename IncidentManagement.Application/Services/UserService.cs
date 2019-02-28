@@ -1,8 +1,10 @@
-﻿using IncidentManagement.Application.Interfaces;
+﻿using AutoMapper;
+using IncidentManagement.Application.Interfaces;
 using IncidentManagement.Application.Logic;
 using IncidentManagement.Application.Models;
 using IncidentManagement.Repository.DTO;
 using IncidentManagement.Repository.Interfaces;
+using System.Collections.Generic;
 
 namespace IncidentManagement.Application.Services
 {
@@ -11,10 +13,12 @@ namespace IncidentManagement.Application.Services
         private IUserRepository _userRepository;
         private IUserTypeRepository _userTypeRepository;
         private PasswordHelper _passwordHelper = new PasswordHelper();
-        public UserService(IUserRepository userRepository, IUserTypeRepository userTypeRepository)
+        private readonly IMapper _mapper;
+        public UserService(IUserRepository userRepository, IUserTypeRepository userTypeRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _userTypeRepository = userTypeRepository;
+            _mapper = mapper;
         }
         public UserModel GetUser(int userId, out string error)
         {
@@ -71,6 +75,22 @@ namespace IncidentManagement.Application.Services
                 error = e.InnerException != null ? e.InnerException.Message : e.Message;
                 return null;
             }
+        }
+        public List<UserModel> GetAllByType(int userTypeId, out string error)
+        {
+            try
+            {
+                var incidents = _userRepository.AllByType(userTypeId).Result;
+                var result = _mapper.Map<List<UserModel>>(incidents);
+                error = "";
+                return result;
+            }
+            catch (System.Exception e)
+            {
+                error = e.InnerException != null ? e.InnerException.Message : e.Message;
+                return null;
+            }
+
         }
     }
 }

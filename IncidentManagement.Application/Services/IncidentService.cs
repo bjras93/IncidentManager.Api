@@ -12,24 +12,28 @@ namespace IncidentManagement.Application.Services
         private readonly IIncidentRepository _incidentRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMachineRepository _machineRepository;
         private readonly IMapper _mapper;
-        public IncidentService(IIncidentRepository incidentRepository, ICommentRepository commentRepository, IUserRepository userRepository, IMapper mapper)
+        public IncidentService(IIncidentRepository incidentRepository, ICommentRepository commentRepository, IUserRepository userRepository, IMachineRepository machineRepository, IMapper mapper)
         {
             _incidentRepository = incidentRepository;
             _commentRepository = commentRepository;
             _userRepository = userRepository;
+            _machineRepository = machineRepository;
             _mapper = mapper;
         }
-        public int Create(int createdBy, int assignedTo, string header, string description, out string error)
+        public int Create(int createdBy, int assignedTo, string header, string description, int machineId, out string error)
         {
             try
             {
                 var getCreatedBy = _userRepository.FindBy(u => u.Id == createdBy).Result;
                 var getAssignedTo = _userRepository.FindBy(u => u.Id == assignedTo).Result;
+                var getMachine = _machineRepository.FindBy(m => m.Id == machineId).Result;
                 var incident = new Incident
                 {
                     AssignedTo = getAssignedTo,
                     CreatedBy = getCreatedBy,
+                    Machine = getMachine,
                     Header = header,
                     Description = description
                 };
@@ -42,6 +46,25 @@ namespace IncidentManagement.Application.Services
             {
                 error = e.InnerException != null ? e.InnerException.Message : e.Message;
                 return 0;
+            }
+
+        }
+        public CommentModel Comment(int createdBy, int incidentId, string text, out string error)
+        {
+            try
+            {
+                var incident = _incidentRepository.FindBy(i => i.Id == incidentId).Result;
+                var user = _userRepository.FindBy(i => i.Id == createdBy).Result;
+                var comment = new Comment { Incident = incident, Text = text, User = user };
+                _commentRepository.Add(comment);
+                _commentRepository.SaveChanges();                
+                error = "";
+                return _mapper.Map<CommentModel>(comment);
+            }
+            catch (System.Exception e)
+            {
+                error = e.InnerException != null ? e.InnerException.Message : e.Message;
+                return null;
             }
 
         }

@@ -23,7 +23,7 @@ namespace IncidentManagement.Repository.Queries
         /// <returns>Incident</returns>
         public Task<Incident> Includes(int id)
         {
-            return Task.FromResult(_repositoryContext.Incidents.Include(u => u.CreatedBy).Include(u => u.AssignedTo).Include(i => i.Comments).Include(i => i.Comments).ThenInclude(c => c.User).FirstOrDefault(i => i.Id == id));
+            return Task.FromResult(_repositoryContext.Incidents.Include(u => u.CreatedBy).Include(u => u.AssignedTo).Include(i => i.Machine).Include(i => i.Comments).Include(i => i.Comments).ThenInclude(c => c.User).FirstOrDefault(i => i.Id == id));
         }
     }
 }

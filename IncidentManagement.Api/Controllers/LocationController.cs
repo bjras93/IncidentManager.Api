@@ -39,7 +39,7 @@ namespace IncidentManagement.Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult GetAll()
         {
             var result = _locationService.GetAll(out string error);

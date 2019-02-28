@@ -30,7 +30,7 @@ namespace IncidentManagement.Api.Controllers
         [HttpPost]
         public IActionResult Create([FromBody]JObject data)
         {
-            var machine = _machineService.Create(data["name"].ToString(), int.Parse(data["locationId"].ToString()), out string error);
+            var machine = _machineService.Create(data["name"].ToString(), data["location"].ToString(), out string error);
             if (string.IsNullOrEmpty(error))
             {
                 return Ok(machine);

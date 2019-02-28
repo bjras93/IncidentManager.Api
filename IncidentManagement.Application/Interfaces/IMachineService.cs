@@ -7,7 +7,7 @@ namespace IncidentManagement.Application.Interfaces
     public interface IMachineService
     {
         MachineModel Get(int machineId, out string error);
-        int Create(string name, int locationId, out string error);
+        int Create(string name, string locationName, out string error);
         List<MachineModel> GetAll(out string error);
     }
 }

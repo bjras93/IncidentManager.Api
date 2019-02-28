@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using IncidentManagement.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
+using IncidentManagement.Application.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -14,9 +11,11 @@ namespace IncidentManagement.Api.Controllers
     public class IncidentController : ControllerBase
     {
         private IIncidentService _incidentService;
-        public IncidentController(IIncidentService incidentService)
+        private readonly IMapper _mapper;
+        public IncidentController(IIncidentService incidentService, IMapper mapper)
         {
             _incidentService = incidentService;
+            _mapper = mapper;
         }
         [HttpPost]
         public IActionResult Get([FromBody]JObject data)
@@ -34,9 +33,9 @@ namespace IncidentManagement.Api.Controllers
             
         }
         [HttpPost]
-        public IActionResult Create(int createdBy, int assignedTo, string header, string description, int location)
+        public IActionResult Create([FromBody]JObject data)
         {
-            var incident = _incidentService.Create(createdBy, assignedTo, header, description, out string error);
+            var incident = _incidentService.Create(int.Parse(data["createdBy"].ToString()), int.Parse(data["assignedTo"].ToString()), data["header"].ToString(), data["description"].ToString(), int.Parse(data["machineId"].ToString()), out string error);
             if (string.IsNullOrEmpty(error))
             {
                 return Ok(incident);
@@ -53,6 +52,19 @@ namespace IncidentManagement.Api.Controllers
             if (string.IsNullOrEmpty(error))
             {
                 return Ok(incidents);
+            }
+            else
+            {
+                return StatusCode(500, error);
+            }
+        }
+        [HttpPost]
+        public IActionResult Comment([FromBody]JObject data)
+        {
+            var comment = _incidentService.Comment(int.Parse(data["createdBy"].ToString()), int.Parse(data["incidentId"].ToString()), data["text"].ToString(), out string error);
+            if (string.IsNullOrEmpty(error))
+            {
+                return Ok(comment);
             }
             else
             {

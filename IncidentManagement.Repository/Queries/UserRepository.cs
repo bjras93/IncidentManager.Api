@@ -1,5 +1,8 @@
 ﻿using IncidentManagement.Repository.DTO;
 using IncidentManagement.Repository.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace IncidentManagement.Repository.Queries
 {
@@ -9,6 +12,10 @@ namespace IncidentManagement.Repository.Queries
         public UserRepository(RepositoryContext context) : base(context)
         {
             _repositoryContext = context;
+        }
+        public Task<List<User>> AllByType(int typeId)
+        {
+            return Task.FromResult(_repositoryContext.Users.Where(u => u.UserType.Id == typeId).ToList());
         }
     }
 }

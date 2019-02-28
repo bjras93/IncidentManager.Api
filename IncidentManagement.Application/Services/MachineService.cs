@@ -24,11 +24,17 @@ namespace IncidentManagement.Application.Services
             _locationRepository = locationRepository;
             _mapper = mapper;
         }
-        public int Create(string name, int locationId, out string error)
+        public int Create(string name, string locationName, out string error)
         {
             try
             {
-                var getLocation = _locationRepository.FindBy(l => l.Id == locationId).Result;
+                var getLocation = _locationRepository.FindBy(l => l.Name == locationName).Result;
+                if (getLocation == null)
+                {
+                    getLocation = new Location { Name = locationName };
+                    _locationRepository.Add(getLocation);
+                    _locationRepository.SaveChanges();
+                }
                 var machine = new Machine
                 {
                     Name = name,

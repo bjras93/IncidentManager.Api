@@ -1,9 +1,7 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using IncidentManagement.Application.Interfaces;
 using IncidentManagement.Application.Services;
 using IncidentManagement.Repository;
-using IncidentManagement.Repository.DTO;
 using IncidentManagement.Repository.Interfaces;
 using IncidentManagement.Repository.Queries;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +11,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Buffers;
+using System.Linq;
 
 namespace IncidentManagement
 {
@@ -29,7 +31,11 @@ namespace IncidentManagement
         public void ConfigureServices(IServiceCollection services)
         {
            services.AddAutoMapper();
-           services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+           services.AddMvc().AddJsonOptions(options =>
+           {
+               options.SerializerSettings.ReferenceLoopHandling
+                 = ReferenceLoopHandling.Ignore;
+           }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             var sqlServer = Configuration.GetConnectionString("SqlServer");
             services.AddDbContext<RepositoryContext>(options => 
             options.UseSqlServer(sqlServer));
