@@ -68,6 +68,7 @@ namespace IncidentManagement
             {
                 app.UseDeveloperExceptionPage();
             }
+            
             app.UseSwagger();
             app.UseCors();
             app.UseSwaggerUI(c =>

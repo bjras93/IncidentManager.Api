@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace IncidentManagement.Api.Controllers
 {
-    [Route("api/[controller]/[action]/{id?}")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class IncidentController : ControllerBase
     {

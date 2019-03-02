@@ -32,17 +32,8 @@ namespace IncidentManagement.Api.Controllers
         [HttpPost("{email}/{password}/{name}/{typeId}")]
         public IActionResult Create(string email, string password, string name, int typeId)
         {
-
-            string error = "";
-            var user = _userService.CreateUser(email, password, name, typeId, out error);
-            if (!string.IsNullOrEmpty(error))
-            {
-                return Ok(user);
-            }
-            else
-            {
-                return StatusCode(500, error);
-            }
+            var user = _userService.CreateUser(email, password, name, typeId, out var error);
+            return string.IsNullOrEmpty(error) ? Ok(user) : StatusCode(500, error);
         }
 
     }

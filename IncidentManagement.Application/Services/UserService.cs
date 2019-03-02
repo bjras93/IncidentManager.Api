@@ -48,10 +48,17 @@ namespace IncidentManagement.Application.Services
                     UserType = userType,
                     Name = name
                 };
-                var created = _userRepository.Add(user).Result;
-                _userRepository.SaveChanges();
-                error = "";
-                return new UserModel { Id = user.Id, Name = user.Name };
+                var added = _userRepository.Add(user).Result;
+                if (added)
+                {
+                    _userRepository.SaveChanges();
+                    error = "";
+                }
+                else
+                {
+                    error = "User already added";
+                }
+                return _mapper.Map<UserModel>(user);
             }
             catch (System.Exception e)
             {
