@@ -89,7 +89,7 @@ namespace IncidentManagement.Application.Services
         {
             try
             {
-                var incidents = _incidentRepository.GetAll().Result;
+                var incidents = _incidentRepository.AllIncidentsWithCreater().Result;
                 var result = _mapper.Map<List<IncidentModel>>(incidents);               
                 error = "";
                 return result;
