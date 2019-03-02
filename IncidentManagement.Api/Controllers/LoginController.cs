@@ -29,7 +29,7 @@ namespace IncidentManagement.Api.Controllers
                 return StatusCode(500, error);
             }
         }
-        [HttpPost]
+        [HttpPost("{email}/{password}/{name}/{typeId}")]
         public IActionResult Create(string email, string password, string name, int typeId)
         {
 

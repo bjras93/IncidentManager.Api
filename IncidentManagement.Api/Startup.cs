@@ -30,19 +30,22 @@ namespace IncidentManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           services.AddAutoMapper();
-           services.AddMvc().AddJsonOptions(options =>
-           {
-               options.SerializerSettings.ReferenceLoopHandling
-                 = ReferenceLoopHandling.Ignore;
-           }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddAutoMapper();
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling
+                  = ReferenceLoopHandling.Ignore;
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             var sqlServer = Configuration.GetConnectionString("SqlServer");
-            services.AddDbContext<RepositoryContext>(options => 
+            services.AddDbContext<RepositoryContext>(options =>
             options.UseSqlServer(sqlServer));
             services.AddCors(options =>
             options.AddDefaultPolicy(builder =>
             builder.AllowAnyHeader()
-            .AllowAnyOrigin()));
+            .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                ));
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IIncidentService, IncidentService>();
@@ -53,7 +56,7 @@ namespace IncidentManagement
             services.AddTransient<IMachineRepository, MachineRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
-            services.AddTransient<IUserTypeRepository, UserTypeRepository>();    
+            services.AddTransient<IUserTypeRepository, UserTypeRepository>();
             services.AddSwaggerGen(c =>
             { c.SwaggerDoc("v1", new Info { Title = "Incident Manager API", Version = "v1" }); });
         }
