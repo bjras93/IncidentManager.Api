@@ -1,6 +1,7 @@
 ﻿using IncidentManagement.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace IncidentManagement.Api.Controllers
 {
@@ -14,9 +15,9 @@ namespace IncidentManagement.Api.Controllers
             _machineService = machineService;
         }
         [HttpPost]
-        public IActionResult Get(int incidentId)
+        public IActionResult Get([FromBody]JObject data)
         {
-            var machine = _machineService.Get(incidentId, out string error);
+            var machine = _machineService.Get(Convert.ToInt32(data["id"]), out string error);
             if (string.IsNullOrEmpty(error))
             {
                 return Ok(machine);

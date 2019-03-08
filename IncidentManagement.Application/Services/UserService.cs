@@ -34,17 +34,14 @@ namespace IncidentManagement.Application.Services
                 return null;                
             }
         }
-        public UserModel CreateUser(string email, string password, string name, int typeId, out string error)
+        public UserModel CreateUser(string email, string name, int typeId, out string error)
         {
             try
             {
                 var userType = _userTypeRepository.FindBy(ut => ut.Id == typeId).Result;
-                var pw = _passwordHelper.HashPassword(password);
                 var user = new User
                 {
                     Email = email,
-                    Password = pw.Hash,
-                    Salt = pw.Salt,
                     UserType = userType,
                     Name = name
                 };
@@ -72,10 +69,19 @@ namespace IncidentManagement.Application.Services
             try
             {
                 var user = _userRepository.FindBy(up => up.Email == email).Result;
+                if(string.IsNullOrEmpty(user.Password))
+                {
+                    var pw = _passwordHelper.HashPassword(password);
+                    user.Password = pw.Hash;
+                    user.Salt = pw.Salt;
+                    _userRepository.Update(user);
+                    _userRepository.SaveChanges();
+                }
                 var verifyPassword = _passwordHelper.VerifyPassword(password, user.Salt);
-                var validUser = _userRepository.FindBy(u => u.Password == verifyPassword.Hash && u.Salt == verifyPassword.Salt).Result;
+                var validUser = _userRepository.FindBy(u => u.Password == verifyPassword.Hash && u.Salt == verifyPassword.Salt, (u => u.UserType)).Result;
+                var mappedUser = _mapper.Map<UserModel>(validUser);
                 error = "";
-                return new UserModel { Id = validUser.Id, Name = validUser.Name };
+                return mappedUser;
             }
             catch (System.Exception e)
             {

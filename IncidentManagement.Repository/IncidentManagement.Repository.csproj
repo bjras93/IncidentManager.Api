@@ -215,6 +215,10 @@
     <Compile Include="Migrations\20190226173731_AddAndRemoveLocation.designer.cs">
       <DependentUpon>20190226173731_AddAndRemoveLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20190305155955_CreatedAndActive.cs" />
+    <Compile Include="Migrations\20190305155955_CreatedAndActive.designer.cs">
+      <DependentUpon>20190305155955_CreatedAndActive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Queries\BaseRepository.cs" />
     <Compile Include="DTO\Comment.cs" />
     <Compile Include="DTO\Incident.cs" />

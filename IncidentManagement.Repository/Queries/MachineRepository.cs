@@ -21,13 +21,14 @@ namespace IncidentManagement.Repository.Queries
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Machine</returns>
-        public Task<Machine> Includes(int id)
+        public Task<Machine> WithIncidents(int id)
         {
-            return Task.FromResult(_repositoryContext.Machines.Include(u => u.Location).Include(i => i.Incidents).FirstOrDefault(i => i.Id == id));
-        }
-        public Task<List<Machine>> IncludesLocation()
-        {
-            return Task.FromResult(_repositoryContext.Machines.Include(u => u.Location).ToList());
+            return Task.FromResult(_repositoryContext.Machines.Include(u => u.Location)
+                .Include(i => i.Incidents)
+                .ThenInclude(i => i.CreatedBy)
+                .Include(i => i.Incidents)
+                .ThenInclude(i => i.AssignedTo)
+                .FirstOrDefault(i => i.Id == id));
         }
     }
 }

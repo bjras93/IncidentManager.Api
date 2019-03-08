@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using IncidentManagement.Application.Interfaces;
 using IncidentManagement.Application.Models;
@@ -35,7 +36,9 @@ namespace IncidentManagement.Application.Services
                     CreatedBy = getCreatedBy,
                     Machine = getMachine,
                     Header = header,
-                    Description = description
+                    Description = description,
+                    Active = true,
+                    Created = DateTime.Now
                 };
                 _incidentRepository.Add(incident);
                 _incidentRepository.SaveChanges();

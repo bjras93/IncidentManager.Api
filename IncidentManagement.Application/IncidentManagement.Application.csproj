@@ -79,6 +79,7 @@
     <Compile Include="Models\MachineModel.cs" />
     <Compile Include="Models\Password.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserTypeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MachineService.cs" />
     <Compile Include="Services\IncidentService.cs" />

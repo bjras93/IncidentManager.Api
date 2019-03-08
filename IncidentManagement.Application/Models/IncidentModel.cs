@@ -11,6 +11,8 @@ namespace IncidentManagement.Application.Models
         public int? Id { get; set; }
         public string Header { get; set; }
         public string Description { get; set; }
+        public bool Active { get; set; }
+        public DateTime Created { get; set; }
         public MachineModel Machine { get; set; }
         public UserModel CreatedBy { get; set; }
         public UserModel AssignedTo { get; set; }

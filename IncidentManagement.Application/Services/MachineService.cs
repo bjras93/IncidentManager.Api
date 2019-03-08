@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using IncidentManagement.Application.Interfaces;
 using IncidentManagement.Application.Models;
@@ -57,7 +58,7 @@ namespace IncidentManagement.Application.Services
         {
             try
             {
-                var machine = _machineRepository.Includes(machineId).Result;
+                var machine = _machineRepository.WithIncidents(machineId).Result;
                 var result = _mapper.Map<MachineModel>(machine);
                 error = "";
                 return result;
@@ -73,8 +74,8 @@ namespace IncidentManagement.Application.Services
         {
             try
             {
-                var machines = _machineRepository.IncludesLocation().Result;
-                var result = _mapper.Map<List<MachineModel>>(machines);               
+                var machines = _machineRepository.GetAll(l => l.Location).Result;
+                var result = _mapper.Map<List<MachineModel>>(machines);                      
                 error = "";
                 return result;
             }

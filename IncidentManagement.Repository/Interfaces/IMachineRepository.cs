@@ -6,7 +6,6 @@ namespace IncidentManagement.Repository.Interfaces
 {
     public interface IMachineRepository: IBaseRepository<Machine>
     {
-        Task<Machine> Includes(int id);
-        Task<List<Machine>> IncludesLocation();
+        Task<Machine> WithIncidents(int id);
     }
 }

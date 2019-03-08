@@ -29,10 +29,10 @@ namespace IncidentManagement.Api.Controllers
                 return StatusCode(500, error);
             }
         }
-        [HttpPost("{email}/{password}/{name}/{typeId}")]
-        public IActionResult Create(string email, string password, string name, int typeId)
+        [HttpPost]
+        public IActionResult Create([FromBody]JObject data)
         {
-            var user = _userService.CreateUser(email, password, name, typeId, out var error);
+            var user = _userService.CreateUser(data["email"].ToString(), data["name"].ToString(), int.Parse(data["typeId"].ToString()), out var error);
             return string.IsNullOrEmpty(error) ? Ok(user) : StatusCode(500, error);
         }
 
