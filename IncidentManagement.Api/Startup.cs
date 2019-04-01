@@ -49,10 +49,12 @@ namespace IncidentManagement
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IIncidentService, IncidentService>();
+            services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IMachineService, MachineService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IIncidentRepository, IncidentRepository>();
+            services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IMachineRepository, MachineRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();

@@ -173,11 +173,13 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="DTO\Location.cs" />
     <Compile Include="DTO\Machine.cs" />
+    <Compile Include="DTO\Project.cs" />
     <Compile Include="Interfaces\IBaseRepository.cs" />
     <Compile Include="Interfaces\IMachineRepository.cs" />
     <Compile Include="Interfaces\ILocationRepository.cs" />
     <Compile Include="Interfaces\ICommentRepository.cs" />
     <Compile Include="Interfaces\IIncidentRepository.cs" />
+    <Compile Include="Interfaces\IProjectRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Migrations\20190225123509_AddedPasswordSalt.cs" />
     <Compile Include="Migrations\20190225123509_AddedPasswordSalt.designer.cs">
@@ -219,6 +221,10 @@
     <Compile Include="Migrations\20190305155955_CreatedAndActive.designer.cs">
       <DependentUpon>20190305155955_CreatedAndActive.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20190401172952_Added-Project.cs" />
+    <Compile Include="Migrations\20190401172952_Added-Project.designer.cs">
+      <DependentUpon>20190401172952_Added-Project.cs</DependentUpon>
+    </Compile>
     <Compile Include="Queries\BaseRepository.cs" />
     <Compile Include="DTO\Comment.cs" />
     <Compile Include="DTO\Incident.cs" />
@@ -238,6 +244,7 @@
     <Compile Include="Queries\CommentRepository.cs" />
     <Compile Include="Queries\IncidentRepository.cs" />
     <Compile Include="Queries\MachineRepository.cs" />
+    <Compile Include="Queries\ProjectRepository.cs" />
     <Compile Include="Queries\UserTypeRepository.cs" />
     <Compile Include="Queries\UserRepository.cs" />
     <Compile Include="RepositoryContext.cs" />
