@@ -26,9 +26,5 @@ namespace IncidentManagement.Repository.Queries
         {
             return Task.FromResult(_repositoryContext.Incidents.Include(u => u.CreatedBy).Include(u => u.AssignedTo).Include(i => i.Machine).Include(i => i.Comments).Include(i => i.Comments).ThenInclude(c => c.User).FirstOrDefault(i => i.Id == id));
         }
-        public Task<List<Incident>> AllIncidentsWithCreater()
-        {
-            return Task.FromResult(_repositoryContext.Incidents.Include(u => u.CreatedBy).ToList());
-        }
     }
 }

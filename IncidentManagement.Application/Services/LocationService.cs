@@ -19,7 +19,7 @@ namespace IncidentManagement.Application.Services
             {
                 var location = _locationRepository.FindBy(l => l.Id == locationId).Result;
                 error = "";
-                var locationModel = new LocationModel { Name = location.Name, Description = location.Description };
+                var locationModel = new LocationModel { Name = location.Name };
                 return locationModel;
             }
             catch (System.Exception e)
@@ -34,7 +34,6 @@ namespace IncidentManagement.Application.Services
             {
                 var location = new Location
                 {
-                    Description = description,
                     Name = name
                 };
                 _locationRepository.Add(location);
@@ -61,8 +60,7 @@ namespace IncidentManagement.Application.Services
                     locationsModel.Add(new LocationModel
                     {
                         Id = location.Id,
-                        Name = location.Name,
-                        Description = location.Description
+                        Name = location.Name
                     });
                 }
                 error = "";

@@ -2,7 +2,9 @@
 using IncidentManagement.Application.Interfaces;
 using IncidentManagement.Application.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace IncidentManagement.Api.Controllers
 {
@@ -59,12 +61,52 @@ namespace IncidentManagement.Api.Controllers
             }
         }
         [HttpPost]
+        public IActionResult GetCreated([FromBody]JObject data)
+        {
+            var incidents = _incidentService.GetCreated(Convert.ToInt32(data["id"]), out string error);
+            if (string.IsNullOrEmpty(error))
+            {
+                return Ok(incidents);
+            }
+            else
+            {
+                return StatusCode(500, error);
+            }
+        }
+        [HttpPost]
+        public IActionResult GetAssigned([FromBody]JObject data)
+        {
+            var incidents = _incidentService.GetAssigned(Convert.ToInt32(data["id"]), out string error);
+            if (string.IsNullOrEmpty(error))
+            {
+                return Ok(incidents);
+            }
+            else
+            {
+                return StatusCode(500, error);
+            }
+        }
+        [HttpPost]
         public IActionResult Comment([FromBody]JObject data)
         {
             var comment = _incidentService.Comment(int.Parse(data["createdBy"].ToString()), int.Parse(data["incidentId"].ToString()), data["text"].ToString(), out string error);
             if (string.IsNullOrEmpty(error))
             {
                 return Ok(comment);
+            }
+            else
+            {
+                return StatusCode(500, error);
+            }
+        }
+        [HttpPost]
+        public IActionResult Update([FromBody]JObject data)
+        {
+            var incident = data["incident"].ToObject<IncidentModel>();
+            var updated = _incidentService.Update(incident, out string error);
+            if (string.IsNullOrEmpty(error))
+            {
+                return Ok(updated);
             }
             else
             {

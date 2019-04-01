@@ -1,4 +1,5 @@
 ﻿using IncidentManagement.Application.Interfaces;
+using IncidentManagement.Application.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
@@ -48,6 +49,20 @@ namespace IncidentManagement.Api.Controllers
             if (string.IsNullOrEmpty(error))
             {
                 return Ok(machines);
+            }
+            else
+            {
+                return StatusCode(500, error);
+            }
+        }
+        [HttpPost]
+        public IActionResult Update([FromBody]JObject data)
+        {
+            var machine = data["machine"].ToObject<MachineModel>();
+            var updated = _machineService.Update(machine, out string error);
+            if (string.IsNullOrEmpty(error))
+            {
+                return Ok(updated);
             }
             else
             {

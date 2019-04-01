@@ -86,5 +86,38 @@ namespace IncidentManagement.Application.Services
             }
             
         }
+        public bool Update(MachineModel machine, out string error)
+        {
+            try
+            {
+                var currentMachine = _machineRepository.FindBy(m => m.Id == machine.Id, m => m.Incidents, m => m.Location).Result;
+                currentMachine.Name = machine.Name;
+                if(machine.Location.Id == 0)
+                {
+                    var newLocation = new Location
+                    {
+                        Name = machine.Location.Name
+                    };
+                    _locationRepository.Add(newLocation);
+                    _locationRepository.SaveChanges();
+                    currentMachine.Location = newLocation;
+                }
+                else
+                {
+                    var currentLocation = _locationRepository.FindBy(l => l.Id == machine.Location.Id).Result;
+                    currentLocation.Name = machine.Location.Name;
+                    currentMachine.Location = currentLocation;
+                }
+                var updated = _machineRepository.Update(currentMachine).Result;
+                _machineRepository.SaveChanges();
+                error = "";
+                return updated;
+            }
+            catch (System.Exception e)
+            {
+                error = e.InnerException != null ? e.InnerException.Message : e.Message;
+                return false;
+            }
+        }
     }
 }

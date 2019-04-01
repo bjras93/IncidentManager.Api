@@ -7,6 +7,5 @@ namespace IncidentManagement.Repository.Interfaces
     public interface IIncidentRepository: IBaseRepository<Incident>
     {
         Task<Incident> Includes(int id);
-        Task<List<Incident>> AllIncidentsWithCreater();
     }
 }

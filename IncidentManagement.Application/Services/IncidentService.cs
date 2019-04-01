@@ -92,7 +92,7 @@ namespace IncidentManagement.Application.Services
         {
             try
             {
-                var incidents = _incidentRepository.AllIncidentsWithCreater().Result;
+                var incidents = _incidentRepository.SearchBy(i => i.Active,c => c.CreatedBy, a => a.AssignedTo).Result;
                 var result = _mapper.Map<List<IncidentModel>>(incidents);               
                 error = "";
                 return result;
@@ -103,6 +103,66 @@ namespace IncidentManagement.Application.Services
                 return null;
             }
             
+        }
+        public List<IncidentModel> GetCreated(int id, out string error)
+        {
+            try
+            {
+                var user = _userRepository.FindBy(u => u.Id == id).Result;
+                var incidents = _incidentRepository.SearchBy(i => i.CreatedBy == user, c => c.CreatedBy, a => a.AssignedTo).Result;
+                var result = _mapper.Map<List<IncidentModel>>(incidents);
+                error = "";
+                return result;
+            }
+            catch (System.Exception e)
+            {
+                error = e.InnerException != null ? e.InnerException.Message : e.Message;
+                return null;
+            }
+        }
+        public List<IncidentModel> GetAssigned(int id, out string error)
+        {
+            try
+            {
+                var user = _userRepository.FindBy(u => u.Id == id).Result;
+                var incidents = _incidentRepository.SearchBy(i => i.AssignedTo == user, c => c.CreatedBy, a => a.AssignedTo).Result;
+                var result = _mapper.Map<List<IncidentModel>>(incidents);
+                error = "";
+                return result;
+            }
+            catch (System.Exception e)
+            {
+                error = e.InnerException != null ? e.InnerException.Message : e.Message;
+                return null;
+            }
+        }
+        public bool Update(IncidentModel incident, out string error)
+        {
+            try
+            {
+                var currentIncident = _incidentRepository.FindBy(i => i.Id == incident.Id).Result;
+                if (incident.Machine != null)
+                {
+                    var machine = _machineRepository.FindBy(m => m.Id == incident.Machine.Id).Result;
+                    currentIncident.Machine = machine;
+                }
+                if (incident.AssignedTo != null)
+                {
+                    var assignedTo = _userRepository.FindBy(u => u.Id == incident.AssignedTo.Id).Result;
+                    currentIncident.AssignedTo = assignedTo;
+                }
+                currentIncident.Description = incident.Description;    
+                currentIncident.Active = incident.Active;
+                var result = _incidentRepository.Update(currentIncident).Result;
+                _incidentRepository.SaveChanges();
+                error = "";
+                return result;
+            }
+            catch (Exception e)
+            {
+                error = e.InnerException != null ? e.InnerException.Message : e.Message;
+                return false;
+            }
         }
     }
 }

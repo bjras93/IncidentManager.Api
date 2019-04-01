@@ -9,5 +9,6 @@ namespace IncidentManagement.Application.Interfaces
         MachineModel Get(int machineId, out string error);
         int Create(string name, string locationName, out string error);
         List<MachineModel> GetAll(out string error);
+        bool Update(MachineModel machine, out string error);
     }
 }
