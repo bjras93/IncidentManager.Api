@@ -1,5 +1,5 @@
 ﻿using IncidentManagement.Application.Interfaces;
-using IncidentManagement.Application.Models;
+using IncidentManagement.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
@@ -58,7 +58,7 @@ namespace IncidentManagement.Api.Controllers
         [HttpPost]
         public IActionResult Update([FromBody]JObject data)
         {
-            var machine = data["machine"].ToObject<MachineModel>();
+            var machine = data["machine"].ToObject<Machine>();
             var updated = _machineService.Update(machine, out string error);
             if (string.IsNullOrEmpty(error))
             {

@@ -1,5 +1,4 @@
 ﻿using IncidentManagement.Application.Interfaces;
-using IncidentManagement.Application.Models;
 using IncidentManagement.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

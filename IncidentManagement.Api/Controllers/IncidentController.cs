@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using IncidentManagement.Application.Interfaces;
-using IncidentManagement.Application.Models;
+using IncidentManagement.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -34,6 +34,8 @@ namespace IncidentManagement.Api.Controllers
             }
             
         }
+        //TODO: 
+        // STOP USING JOBJECT
         [HttpPost]
         public IActionResult Create([FromBody]JObject data)
         {
@@ -102,7 +104,7 @@ namespace IncidentManagement.Api.Controllers
         [HttpPost]
         public IActionResult Update([FromBody]JObject data)
         {
-            var incident = data["incident"].ToObject<IncidentModel>();
+            var incident = data["incident"].ToObject<Incident>();
             var updated = _incidentService.Update(incident, out string error);
             if (string.IsNullOrEmpty(error))
             {

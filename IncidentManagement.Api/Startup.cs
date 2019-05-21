@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using IncidentManagement.Application.Interfaces;
-using IncidentManagement.Application.Services;
 using IncidentManagement.Repository;
 using IncidentManagement.Repository.Interfaces;
 using IncidentManagement.Repository.Queries;
@@ -12,9 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using System.Buffers;
-using System.Linq;
+using IncidentManagement.Application.Interfaces;
+using IncidentManagement.Application.Services;
 
 namespace IncidentManagement
 {
@@ -47,18 +44,20 @@ namespace IncidentManagement
                 .AllowCredentials()
                 ));
 
+            services.AddTransient<ISectionService, SectionService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IIncidentService, IncidentService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IMachineService, MachineService>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ISectionRepository, SectionRepository>();
             services.AddTransient<IIncidentRepository, IncidentRepository>();
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IMachineRepository, MachineRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
-            services.AddTransient<IUserTypeRepository, UserTypeRepository>();
+            services.AddTransient<IUserTypeRepository, UserTypeRepository>();            
             services.AddSwaggerGen(c =>
             { c.SwaggerDoc("v1", new Info { Title = "Incident Manager API", Version = "v1" }); });
         }

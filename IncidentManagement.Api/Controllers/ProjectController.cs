@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using IncidentManagement.Application.Interfaces;
-using IncidentManagement.Application.Models;
+using IncidentManagement.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -102,7 +102,7 @@ namespace IncidentManagement.Api.Controllers
         [HttpPost]
         public IActionResult Update([FromBody]JObject data)
         {
-            var project = data["project"].ToObject<ProjectModel>();
+            var project = data["project"].ToObject<Project>();
             var updated = _projectService.Update(project, out string error);
             if (string.IsNullOrEmpty(error))
             {
